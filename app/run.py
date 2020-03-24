@@ -12,9 +12,6 @@ from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
-from visualization import return_figures
-
-
 
 app = Flask(__name__)
 
@@ -93,7 +90,6 @@ def index():
     # create visuals
     graphs = return_figures()
                     
-    
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
