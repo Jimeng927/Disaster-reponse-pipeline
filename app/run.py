@@ -1,3 +1,4 @@
+
 import json
 import plotly
 import pandas as pd
@@ -10,6 +11,9 @@ from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
+
+from visualization import return_figures
+
 
 
 app = Flask(__name__)
@@ -36,60 +40,59 @@ df = pd.read_sql_table('Disaster', engine)
 # load model
 model = joblib.load("../models/multioutput.pkl")
 
+#Plot figures
+def return_figures():
+    """Creates plotly visualizations
+
+    Args:
+        None
+
+    Returns:
+        list (dict): list containing plotly visualizations
+    """
+    genre_counts = df.groupby('genre').count()['message']
+    genre_names = list(genre_counts.index)
+
+    graph_one = [Bar(
+    x = genre_names,
+    y = genre_counts,
+    )]
+
+
+    layout_one = dict(title = 'Distribution of Message Genres',
+                xaxis = dict(title = "Genre"),
+                yaxis = dict(title = "Count"))
+    
+    #plot graph two
+
+    floods_counts = df.groupby('floods').count()['message']
+    floods_names = list(floods_counts.index)
+    
+    graph_two = [Bar(
+    x = floods_names,
+    y = floods_counts,
+    )]
+
+    layout_two = dict(title = 'Distribution of Message Floods',
+                xaxis = dict(title = "Floods"),
+                yaxis = dict(title = "Count"))
+
+
+    figures = []
+    figures.append(dict(data=graph_one, layout=layout_one))
+    figures.append(dict(data=graph_two, layout=layout_two))
+
+    return figures
+
 
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
 def index():
     
-    # extract data needed for visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
-
-    floods_counts = df.groupby('floods').count()['message']
-    floods_names = list(floods_counts.index)  
-    
     # create visuals
-    graphs = [
-        {
-            'data': [
-                Bar(
-                    x=genre_names,
-                    y=genre_counts
-                )
-            ],
-
-            'layout': {
-                'title': 'Distribution of Message Genres',
-                'yaxis': {
-                    'title': "Count"
-                },
-                'xaxis': {
-                    'title': "Genre"
-                }
-            }
-        },
-
-        {
-            'data': [
-                Bar(
-                    x=floods_names,
-                    y=floods_counts
-                )
-            ],
-
-            'layout': {
-                'title': 'Distribution of Message Floods',
-                'yaxis': {
-                    'title': "Count"
-                },
-                'xaxis': {
-                    'title': "Floods"
-                }
-            }
-        }
-        
-    ]
+    graphs = return_figures()
+                    
     
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
