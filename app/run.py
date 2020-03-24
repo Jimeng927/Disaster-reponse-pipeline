@@ -15,6 +15,8 @@ from sqlalchemy import create_engine
 app = Flask(__name__)
 
 def tokenize(text):
+    text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
+    
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -22,6 +24,8 @@ def tokenize(text):
     for tok in tokens:
         clean_tok = lemmatizer.lemmatize(tok).lower().strip()
         clean_tokens.append(clean_tok)
+
+    clean_tokens = [w for w in clean_tokens if w not in stopwords.words("english")]
 
     return clean_tokens
 
@@ -39,12 +43,13 @@ model = joblib.load("../models/multioutput.pkl")
 def index():
     
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
+
+    floods_counts = df.groupby('floods').count()['message']
+    floods_names = list(floods_counts.index)  
     
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
@@ -63,7 +68,27 @@ def index():
                     'title': "Genre"
                 }
             }
+        },
+
+        {
+            'data': [
+                Bar(
+                    x=floods_names,
+                    y=floods_counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Message Floods',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Floods"
+                }
+            }
         }
+        
     ]
     
     # encode plotly graphs in JSON
