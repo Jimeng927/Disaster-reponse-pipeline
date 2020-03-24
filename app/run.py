@@ -8,7 +8,8 @@ from nltk.tokenize import word_tokenize
 
 from flask import Flask
 from flask import render_template, request, jsonify
-from plotly.graph_objs import Bar
+from plotly.graph_objects import Bar
+from plotly.graph_objects import Pie
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
@@ -50,15 +51,13 @@ def return_figures():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
 
-    graph_one = [Bar(
-    x = genre_names,
-    y = genre_counts,
+    graph_one = [Pie(
+    labels = genre_names,
+    values = genre_counts,
     )]
 
 
-    layout_one = dict(title = 'Distribution of Message Genres',
-                xaxis = dict(title = "Genre"),
-                yaxis = dict(title = "Count"))
+    layout_one = dict(title = 'Distribution of Message Genres')
     
     #plot graph two
 
@@ -82,12 +81,11 @@ def return_figures():
     return figures
 
 
-# index webpage displays cool visuals and receives user input text for model
+# index webpage displays visuals from function return_figures() 
 @app.route('/')
 @app.route('/index')
 def index():
     
-    # create visuals
     graphs = return_figures()
                     
     # encode plotly graphs in JSON
