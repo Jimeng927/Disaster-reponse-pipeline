@@ -14,7 +14,7 @@ from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
 
-app = Flask(__name__)
+#app = Flask(__name__)
 
 def tokenize(text):
     text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
@@ -113,10 +113,11 @@ def go():
         classification_result=classification_results
     )
 
-
+'''
 def main():
     app.run(host='0.0.0.0', port=3001, debug=True)
 
 
 if __name__ == '__main__':
     main()
+'''
