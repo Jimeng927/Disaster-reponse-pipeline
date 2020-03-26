@@ -48,6 +48,7 @@ def return_figures():
     Returns:
         list (dict): list containing plotly visualizations
     """
+    #plot graph one
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
 
@@ -61,17 +62,16 @@ def return_figures():
     
     #plot graph two
 
-    floods_counts = df.groupby('floods').count()['message']
-    floods_names = list(floods_counts.index)
+    cat_proportion = df[df.columns[4:]].mean().sort_values(ascending=False)[:10]
+    cat_names = list(cat_proportion.index)
     
     graph_two = [Bar(
-    x = floods_names,
-    y = floods_counts,
+    x = cat_names,
+    y = cat_proportion,
     )]
 
-    layout_two = dict(title = 'Distribution of Message Floods',
-                xaxis = dict(title = "Floods"),
-                yaxis = dict(title = "Count"))
+    layout_two = dict(title = 'Top 10 Categories of Disaster Response',
+                yaxis = dict(title = "Proportion"))
 
 
     figures = []
