@@ -25,33 +25,6 @@ The project includes three components:
 
 Python 3.7.2 
 
-```python
-import sys
-from sqlalchemy import create_engine
-import pandas 
-import numpy
-import nltk
-import re
-from nltk.tokenize import word_tokenize
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import stopwords
-from sklearn.multioutput import MultiOutputClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline, FeatureUnion
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import classification_report
-import pickle
-import json
-import plotly
-from flask import Flask
-from flask import render_template, request, jsonify
-from plotly.graph_objects import Bar
-from plotly.graph_objects import Pie
-from sklearn.externals import joblib
-```
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up database and model.
