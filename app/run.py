@@ -8,12 +8,14 @@ from nltk.tokenize import word_tokenize
 from flask import Flask
 from flask import render_template, request, jsonify
 from sklearn.externals import joblib
+
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 
 from visual import return_figures
 
 
-app = Flask(__name__)
+#app = Flask(__name__)
 
 def tokenize(text):
     text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
