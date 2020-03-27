@@ -73,7 +73,8 @@ from sklearn.externals import joblib
 │   ├── templates                         
 │   │   ├── master.html                  # master html page 
 │   │   ├── go.html                      # master/go html page that displays the search bar result
-│   └── run.py                           # Flask web app
+|   ├── visual.py                        # Use plotly to make visualization
+│   └── run.py                           # Deploy visulazation via Flask web app
 ├── data
 │   ├── disaster_messages.csv            # Dataset containing original messages
 │   ├── disaster_categories.csv          # Dataset encoded with 36 different categories related to disaster response
