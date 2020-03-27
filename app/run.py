@@ -1,6 +1,5 @@
-
-import json
 import plotly
+import json
 import pandas as pd
 
 from nltk.stem import WordNetLemmatizer
@@ -8,13 +7,13 @@ from nltk.tokenize import word_tokenize
 
 from flask import Flask
 from flask import render_template, request, jsonify
-from plotly.graph_objects import Bar
-from plotly.graph_objects import Pie
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
+from visual import return_figures
 
-#app = Flask(__name__)
+
+app = Flask(__name__)
 
 def tokenize(text):
     text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
@@ -37,49 +36,6 @@ df = pd.read_sql_table('Disaster', engine)
 
 # load model
 model = joblib.load("../models/multioutput.pkl")
-
-#Plot figures
-def return_figures():
-    """Creates plotly visualizations
-
-    Args:
-        None
-
-    Returns:
-        list (dict): list containing plotly visualizations
-    """
-    #plot graph one
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
-
-    graph_one = [Pie(
-    labels = genre_names,
-    values = genre_counts,
-    )]
-
-
-    layout_one = dict(title = 'Distribution of Message Genres')
-    
-    #plot graph two
-
-    cat_proportion = df[df.columns[4:]].mean().sort_values(ascending=False)[:10]
-    cat_names = list(cat_proportion.index)
-    
-    graph_two = [Bar(
-    x = cat_names,
-    y = cat_proportion,
-    )]
-
-    layout_two = dict(title = 'Top 10 Categories of Disaster Response',
-                yaxis = dict(title = "Proportion"))
-
-
-    figures = []
-    figures.append(dict(data=graph_one, layout=layout_one))
-    figures.append(dict(data=graph_two, layout=layout_two))
-
-    return figures
-
 
 # index webpage displays visuals from function return_figures() 
 @app.route('/')
