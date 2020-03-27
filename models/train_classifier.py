@@ -17,6 +17,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 import pickle
+import time
 
 def load_data(database_filepath):
     '''
@@ -79,7 +80,7 @@ def build_model():
     # hyper parameter grid
 
     parameters = {
-        'clf__estimator__max_depth' : [2,4,6],
+        'clf__estimator__max_depth' : [4,6,8],
         'clf__estimator__max_features': ['auto', 'sqrt', 'log2'],
         'clf__estimator__n_estimators': [50, 100, 200]
              }
@@ -99,7 +100,13 @@ def evaluate_model(model, X_test, Y_test, category_names):
     category_name: name for each classification output
     '''
     Y_pred = model.predict(X_test)
-    print(classification_report(Y_test.values, Y_pred, target_names = category_names))
+    accuracy = (Y_pred==Y_test).mean()
+    print("Accuracy:\n", accuracy)
+
+    for i in range(len(category_names)):
+        print(category_names[i])
+        print(classification_report(Y_test.iloc[:,i].values, Y_pred[:,i]))
+
 
 
 def save_model(model, model_filepath):
@@ -118,7 +125,9 @@ def main():
         model = build_model()
 
         print('Training model...')
+        start_time = time.time()
         model.fit(X_train, Y_train)
+        print ('Model training time is %s minutes' % ((time.time() - start_time)/60))
 
         print('Evaluating model...')
         evaluate_model(model, X_test, Y_test, category_names)
