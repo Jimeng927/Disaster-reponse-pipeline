@@ -87,6 +87,48 @@ from sklearn.externals import joblib
 ## 4. Results
 
 The machine learning model evaluation results are show in the table below
+
+**Accuracy Table**
+```
+Accuracy:
+related                   0.819823
+request                   0.891663
+offer                     0.995390
+aid_related               0.784095
+medical_help              0.926047
+medical_products          0.953515
+search_and_rescue         0.973876
+security                  0.979831
+military                  0.967153
+child_alone               1.000000
+water                     0.959470
+food                      0.943527
+shelter                   0.940837
+clothing                  0.984825
+money                     0.976950
+missing_people            0.992509
+refugees                  0.966193
+death                     0.965040
+other_aid                 0.865156
+infrastructure_related    0.932578
+transport                 0.956781
+buildings                 0.954091
+electricity               0.979831
+tools                     0.992509
+hospitals                 0.988283
+shops                     0.994622
+aid_centers               0.989243
+other_infrastructure      0.954284
+weather_related           0.883212
+floods                    0.951018
+storm                     0.942374
+fire                      0.990588
+earthquake                0.974260
+cold                      0.978871
+other_weather             0.948521
+direct_report             0.847292
+```
+
 ```
                        related
               precision    recall  f1-score   support
