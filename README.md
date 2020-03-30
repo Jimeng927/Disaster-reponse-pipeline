@@ -62,6 +62,13 @@ Python 3.7.2
 
 The machine learning model evaluation results are show in the table below
 
+**Flask web app screenshot**
+![](images/two_plots.png)
+![](images/cat.png)
+![](images/search.png)
+![](images/res1.png)
+![](images/res2.png)
+
 **Accuracy Table**
 ```
 Accuracy:
